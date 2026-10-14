@@ -1,0 +1,6 @@
+torch>=2.6,<3
+torchvision>=0.21,<1
+numpy>=1.26,<3
+opencv-python>=4.10,<6
+PyYAML>=6,<7
+PyQt6>=6.7,<7

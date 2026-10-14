@@ -1,0 +1,5 @@
+video,start,end,label,group_id
+../data/raw/operator01.mp4,0,2,idle,operator01
+../data/raw/operator01.mp4,2,4,pickup_tool,operator01
+../data/raw/operator01.mp4,4,8,operate,operator01
+../data/raw/operator01.mp4,8,10,wrong_operation,operator01

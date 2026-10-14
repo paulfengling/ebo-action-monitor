@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ebo-action-monitor"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.26,<3", "opencv-python>=4.10,<6", "PyYAML>=6,<7", "torch>=2.6,<3", "torchvision>=0.21,<1"]
+
+[project.optional-dependencies]
+ui = ["PyQt6>=6.7,<7"]
+test = ["PyQt6>=6.7,<7", "imageio-ffmpeg>=0.6,<1"]
+
+[project.scripts]
+ebo = "ebo.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["ebo*"]

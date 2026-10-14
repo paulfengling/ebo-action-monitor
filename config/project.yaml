@@ -1,0 +1,40 @@
+name: EBo action monitor
+# 示例类别；正式采集前替换为现场实际动作。id 必须唯一且保持不变。
+classes:
+  - {id: idle, name: 等待或未操作, kind: neutral}
+  - {id: pickup_tool, name: 拿起工具, kind: correct}
+  - {id: operate, name: 执行规定操作, kind: correct}
+  - {id: wrong_operation, name: 明确错误操作, kind: incorrect}
+model:
+  architecture: r3d_18
+  frames: 16
+  window_seconds: 2.0
+  # 与官方 Kinetics400 预训练权重对应；训练、离线评估与在线推理共用。
+  resize: [128, 171]
+  crop: [112, 112]
+  # 可选固定人员/操作区域，0–1 归一化 [x1,y1,x2,y2]；训练与推理必须一致。
+  roi: null
+train:
+  epochs: 15
+  batch_size: 2
+  learning_rate: 0.0001
+  workers: 0
+  seed: 42
+  freeze_backbone: false
+stream:
+  source_env: RTSP_URL
+  open_timeout_ms: 5000
+  read_timeout_ms: 3000
+  reconnect_seconds: 2
+  max_gap_seconds: 0.6
+  buffer_long_edge: 640
+  inference_interval: 0.5
+  confidence_threshold: 0.70
+  stable_predictions: 3
+  max_result_age_seconds: 1.5
+# 示例流程；顺序与时间均须由现场 SOP 确认。没有确认的规则不要用于放行。
+sop:
+  enabled: false
+  steps:
+    - {action: pickup_tool, min_seconds: 0.5}
+    - {action: operate, min_seconds: 5.0}
