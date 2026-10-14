@@ -16,3 +16,16 @@ runs/
 *.zip
 .env.*
 !.env.example
+# Local reference project, recordings and learned model artifacts.
+/AI-SOP/
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.npz
+# Original local handbook contains a video frame and workstation path.
+/docs/EBo_SOP_案例实操学习手册.docx

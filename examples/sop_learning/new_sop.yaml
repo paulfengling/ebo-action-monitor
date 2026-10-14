@@ -1,0 +1,36 @@
+# 学习模板，操作定义及时间规则须按真实流程修改。
+# 这是完整配置；三个示例类别不代表任何工厂已验收的 SOP。
+name: EBo new SOP learning template
+classes:
+  - {id: background, name: 未执行操作, kind: neutral}
+  - {id: operate, name: 执行指定操作, kind: correct}
+  - {id: wrong_operation, name: 可观察的明确错误操作, kind: incorrect}
+model:
+  architecture: r3d_18
+  frames: 16
+  window_seconds: 2.0
+  resize: [128, 171]
+  crop: [112, 112]
+  roi: null
+train:
+  epochs: 15
+  batch_size: 2
+  learning_rate: 0.0001
+  workers: 0
+  seed: 42
+  freeze_backbone: true
+stream:
+  source_env: RTSP_URL
+  open_timeout_ms: 5000
+  read_timeout_ms: 3000
+  reconnect_seconds: 2
+  max_gap_seconds: 0.6
+  buffer_long_edge: 640
+  inference_interval: 0.5
+  confidence_threshold: 0.70
+  stable_predictions: 3
+  max_result_age_seconds: 1.5
+sop:
+  enabled: false
+  steps:
+    - {action: operate, min_seconds: 0.0}

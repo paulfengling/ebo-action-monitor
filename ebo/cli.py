@@ -47,6 +47,25 @@ def parser():
     train.add_argument("--from-scratch", action="store_true")
     train.add_argument("--allow-synthetic", action="store_true", help="仅烟雾测试")
     train.add_argument("--resume")
+    replay = subs.add_parser("fit-replay", help="单视频拟合演示，不建立独立验证精度")
+    replay.add_argument("--manifest", required=True)
+    replay.add_argument("--out", required=True)
+    replay.add_argument("--device", default="auto")
+    replay.add_argument("--epochs", type=int, default=1200)
+    replay.add_argument("--learning-rate", type=float, default=.02)
+    offline = subs.add_parser("predict-video", help="顺序解码本地视频，逐帧输出模型预测")
+    offline.add_argument("--checkpoint", required=True)
+    offline.add_argument("--video", required=True)
+    offline.add_argument("--out", required=True)
+    offline.add_argument("--device", default="auto")
+    offline.add_argument("--stride", type=int, default=1, help="1=每帧独立推理；大于1的间隔帧明确标为复用")
+    offline.add_argument("--save-frames", action="store_true", help="保存每个源帧的叠字 JPEG")
+    offline.add_argument("--save-raw-frames", action="store_true", help="另存每个源帧的原始 JPEG")
+    offline.add_argument("--no-video", action="store_true", help="不生成叠字MP4")
+    offline.add_argument("--reference-timeline", help="仅导出人工参考字段，不作为模型输入")
+    offline.add_argument("--allow-demo-model", action="store_true")
+    offline.add_argument("--overlay-font", help="中文字体文件")
+    offline.add_argument("--max-frames", type=int, help="调试：最多导出多少帧")
     evaluation = subs.add_parser("evaluate")
     evaluation.add_argument("--checkpoint", required=True)
     evaluation.add_argument("--test", default="data/splits/test.jsonl")
@@ -115,6 +134,16 @@ def main(argv=None):
             from .training import train
             result = {"checkpoint": train(cfg, args.train, args.val, args.out, args.device,
                                            not args.from_scratch, args.allow_synthetic, args.resume)}
+        elif args.command == "fit-replay":
+            from .calibration import fit_replay
+            result = fit_replay(cfg, args.manifest, args.out, args.device, args.epochs, args.learning_rate)
+        elif args.command == "predict-video":
+            from .offline import run
+            result = run(checkpoint=args.checkpoint, source=args.video, out_dir=args.out,
+                         device_name=args.device, stride=args.stride, save_frames=args.save_frames,
+                         annotated=not args.no_video, reference_timeline=args.reference_timeline,
+                         allow_demo=args.allow_demo_model, overlay_font=args.overlay_font,
+                         max_frames=args.max_frames, save_raw_frames=args.save_raw_frames)
         elif args.command == "evaluate":
             from .training import evaluate
             result = evaluate(args.checkpoint, args.test, args.out, args.device, args.allow_demo_model,
@@ -133,7 +162,7 @@ def main(argv=None):
             result = smoke(args.out, cfg, args.pretrained)
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
-    except (ValueError, FileNotFoundError) as exc:
+    except (ValueError, FileNotFoundError, FileExistsError) as exc:
         # Inputs can contain credentials; only trusted validation messages are emitted.
         if args.command in ("infer", "monitor", "record"):
             print("失败：请检查配置、模型和视频源。错误类型：" + type(exc).__name__, file=sys.stderr)

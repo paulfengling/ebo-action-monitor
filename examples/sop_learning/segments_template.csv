@@ -1,0 +1,10 @@
+﻿video,start,end,label,group_id
+../../data/raw/operator01_session01.mp4,0,3,background,operator01
+../../data/raw/operator01_session01.mp4,3,9,operate,operator01
+../../data/raw/operator01_session01.mp4,9,12,wrong_operation,operator01
+../../data/raw/operator02_session01.mp4,0,3,background,operator02
+../../data/raw/operator02_session01.mp4,3,9,operate,operator02
+../../data/raw/operator02_session01.mp4,9,12,wrong_operation,operator02
+../../data/raw/operator03_session01.mp4,0,3,background,operator03
+../../data/raw/operator03_session01.mp4,3,9,operate,operator03
+../../data/raw/operator03_session01.mp4,9,12,wrong_operation,operator03

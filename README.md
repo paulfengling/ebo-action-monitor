@@ -185,3 +185,13 @@ python scripts/verify_rtsp.py --server /absolute/path/mediamtx --smoke-dir runs/
 该脚本依赖前面的 smoke 验证结果，在 loopback 地址推送合成视频，实际使用 RTSP/TCP 采集，检查中断清空窗口、恢复新会话、录像与在线推理，最后关闭自己启动的服务和推流进程。默认端口18554，冲突可改 `--port`。
 
 本机生成的协议验证结果保存在 `runs/rtsp_final/verification.json`；不是工厂 RTSP 摄像头验收。
+
+## 本地 MP4 每帧预测
+
+可用 `predict-video` 顺序解码本地视频，每帧保存 CSV/JSONL 预测、叠字 JPEG 和完整叠字视频。若目前只有 `mirror_demo_01.mp4` 一段录像，可先通过 `scripts/prepare_mirror.py` 拆分背景与五个组装动作，再用 `fit-replay` 冻结预训练 R3D-18 主干、拟合分类头，最后回放同一视频。
+
+这是单视频流程演示，不是独立测试或装配质量验收。人工时间线仅导出作对照，不作为模型输入；默认每帧使用前 2 秒历史，前 60 帧保留预热未知状态。完整命令、流程定义、候选与稳定动作说明及文件格式见 [本地视频流程拆分与逐帧预测](docs/LOCAL_VIDEO_REPLAY.md)。已有产物在 `runs/mirror_ebo/`，重跑示例使用新的 `runs/mirror_example/` 目录。
+
+可编辑的 [案例实操学习手册公开版](docs/EBo_SOP_案例实操学习手册_公开版.docx) 记录实际标签来源、46 段数据、分类头训练参数、逐帧结果、PyQt 标注操作与迁移新 SOP 的独立训练流程。[配套学习模板](examples/sop_learning/) 包含原案例范围表和需要替换真实录像的新 SOP 示例。
+
+公开仓库提供源码、标注范围示例和说明文档。原视频、用户提供的 AI-SOP 项目、训练权重及本地预测产物需自行提供或生成。公开版手册以预测字段示例替代原视频截图，并移除了本机目录；嵌入字体的版权和许可见 [字体说明](notices/Noto-Sans-CJK-SC-NOTICE.txt)。

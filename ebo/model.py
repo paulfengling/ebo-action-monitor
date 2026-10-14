@@ -13,6 +13,8 @@ def device(name="auto"):
         name = "cuda" if torch.cuda.is_available() else "cpu"
     if name.startswith("cuda") and not torch.cuda.is_available():
         raise ValueError("当前环境没有可用 CUDA，请检查驱动与 CUDA 版 PyTorch")
+    if name == "mps" and not torch.backends.mps.is_available():
+        raise ValueError("当前环境没有可用 MPS")
     return torch.device(name)
 
 
@@ -64,6 +66,8 @@ def load_checkpoint(path, target_device, allow_demo=False):
     ckpt = torch.load(path, map_location="cpu", weights_only=True)
     if ckpt.get("schema_version") != 1:
         raise ValueError("不支持的 checkpoint 格式")
+    if ckpt.get("calibration_only") and not allow_demo:
+        raise ValueError("此模型只对单视频拟合，禁止正式验收；回放需显式 --allow-demo-model")
     if ckpt.get("demo_only") and not allow_demo:
         raise ValueError("这是合成数据烟雾测试模型，禁止正式推理；测试时显式 --allow-demo-model")
     model = make_model(len(ckpt["config"]["classes"]))

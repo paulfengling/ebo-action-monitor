@@ -1,0 +1,8 @@
+﻿start,end,label,description,first_frame,end_frame_exclusive,observed_start_seconds,observed_end_seconds,annotation_source,boundary_precision
+0.0,2.0007142857142854,background,背景或尚未开始,0,60,0.0,2.0,manual_observation,approximate
+2.0007142857142854,34.012142857142855,base_connect,S1 底座与立杆连接,60,1020,2.0,34.0,manual_observation,approximate
+34.012142857142855,46.983440476190474,mirror_align,S2 镜面与支架对齐,1020,1409,34.0,47.0,manual_observation,approximate
+46.983440476190474,54.98629761904762,fasten_side_a,S3 第一次侧边紧固，称侧 A,1409,1649,47.0,55.0,manual_observation,approximate
+54.98629761904762,68.99129761904761,fasten_side_b,S4 第二次侧边紧固，称侧 B,1649,2069,55.0,69.0,manual_observation,approximate
+68.99129761904761,90.99915476190476,final_check,S5 抬起、翻转、调整与整体检查,2069,2729,69.0,91.0,manual_observation,approximate
+90.99915476190476,93.36666666666666,background,背景或镜头调整,2729,2800,91.0,93.36666666666666,manual_observation,approximate

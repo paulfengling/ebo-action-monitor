@@ -1,0 +1,11 @@
+The public EBo learning handbook embeds Noto Sans CJK SC Regular for Chinese text rendering.
+
+Font copyright from its name table:
+© 2014-2021 Adobe (http://www.adobe.com/).
+
+Font source:
+https://github.com/notofonts/noto-cjk/blob/main/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-Regular.otf
+
+The embedded font is licensed under the SIL Open Font License, Version 1.1.
+The full upstream license is provided in Noto-Sans-CJK-SC-LICENSE.txt.
+The font license applies to the font software, not the handbook's text or EBo source code.

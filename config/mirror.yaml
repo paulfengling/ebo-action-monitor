@@ -1,0 +1,45 @@
+name: EBo mirror assembly — single-video demonstration
+# 六类来自镜子组装演示视频的人工观察，不包含不良装配样本。
+# 这里只识别动作阶段，不能判断紧固扭矩、隐藏连接或成品质量。
+classes:
+  - {id: background, name: 背景或未操作, kind: neutral}
+  - {id: base_connect, name: S1 底座与立杆连接, kind: correct}
+  - {id: mirror_align, name: S2 镜面与支架对齐, kind: correct}
+  - {id: fasten_side_a, name: S3 侧 A 紧固, kind: correct}
+  - {id: fasten_side_b, name: S4 侧 B 紧固, kind: correct}
+  - {id: final_check, name: S5 整体检查, kind: correct}
+model:
+  architecture: r3d_18
+  frames: 16
+  window_seconds: 2.0
+  resize: [128, 171]
+  crop: [112, 112]
+  roi: null
+train:
+  epochs: 15
+  batch_size: 2
+  learning_rate: 0.0001
+  workers: 0
+  seed: 42
+  freeze_backbone: false
+stream:
+  source_env: RTSP_URL
+  open_timeout_ms: 5000
+  read_timeout_ms: 3000
+  reconnect_seconds: 2
+  max_gap_seconds: 0.6
+  buffer_long_edge: 640
+  inference_interval: 0.5
+  confidence_threshold: 0.70
+  stable_predictions: 3
+  max_result_age_seconds: 1.5
+# 视频中的操作顺序不是已确认工艺规则；min_seconds=0 为占位，不是合格要求。
+# A/B 是视频中第一次/第二次紧固的观察标签，尚无稳定的工件坐标定义。
+sop:
+  enabled: false
+  steps:
+    - {action: base_connect, min_seconds: 0.0}
+    - {action: mirror_align, min_seconds: 0.0}
+    - {action: fasten_side_a, min_seconds: 0.0}
+    - {action: fasten_side_b, min_seconds: 0.0}
+    - {action: final_check, min_seconds: 0.0}

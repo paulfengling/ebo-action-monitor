@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "ebo-action-monitor"
 version = "0.1.0"
 requires-python = ">=3.10"
-dependencies = ["numpy>=1.26,<3", "opencv-python>=4.10,<6", "PyYAML>=6,<7", "torch>=2.6,<3", "torchvision>=0.21,<1"]
+dependencies = ["numpy>=1.26,<3", "opencv-python>=4.10,<6", "PyYAML>=6,<7", "torch>=2.6,<3", "torchvision>=0.21,<1", "Pillow>=10,<13"]
 
 [project.optional-dependencies]
 ui = ["PyQt6>=6.7,<7"]
